@@ -8,30 +8,38 @@
 ~~~
 docker compose up
 ~~~
-#### Rodar a API:
-##### Vá no reposiório: https://github.com/higorribeiro001/api-performance-student
-##### Siga o passo a passo de instalação e coloque a api para rodar localmente
-#### Com a API em execução na porta 8000, instale o ngrok:
+
+> Migrações:
+#### Faça as migrações com os seguintes comandos.
+
+#### Acessar container:
 ~~~
-npm install ngrok
-yarn install ngrok
+docker exec -it flask_app sh
 ~~~
-#### Crie uma conta para o Ngrok no site: https://dashboard.ngrok.com/
-#### Configure o ngrok no terminal, por exemplo:
+
+#### Iniciar aplicação no container:
 ~~~
-ngrok config add-authtoken 2aa9NIslt5J7lcBhoSsERYvs7Kx_3nJy78KyJhpxd1tUjK7zR
+export FLASK_APP=run.py
 ~~~
-#### Criar túnel na porta 8000 com ngrok: 
+
+#### Define o modo de execução:
 ~~~
-ngrok http 8000
+export FLASK_ENV=development
 ~~~
-#### No settings.py da api:
-##### Neste trecho de código: ALLOWED_HOSTS = ["0b79-179-162-218-180.ngrok-free.app", "127.0.0.1"]
-##### Substitua este trecho "0b79-179-162-218-180.ngrok-free.app" pelo novo link gerado pelo ngrok, não esqueça de retirar "https//"
-#### No aplicativo, no arquivo de "students.ts" dentro do diretório "src/api":
-##### Idenfique onde o axios está configurado nas requests como por exemplo: axios.post('https://0b79-179-162-218-180.ngrok-free.app/student-performance/api/v1/'...
-##### Substitua "https://0b79-179-162-218-180.ngrok-free.app" pelo novo link gerado pelo ngrok, ou configure para rodar variáveis de ambiente e substitua no arquivo ".env"
+
+#### Cria pasta de migrations caso não haja:
 ~~~
-npm start
-yarn start
+flask db init 
 ~~~
+
+#### Fazer uma migração:
+~~~
+flask db migrate -m "Initial migration"
+~~~
+
+#### Subir migração:
+~~~
+flask db upgrade
+~~~
+
+
