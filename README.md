@@ -42,4 +42,11 @@ flask db migrate -m "Initial migration"
 flask db upgrade
 ~~~
 
+> Documentação:
+#### Por fim acesse a documentação do swagger da api
+~~~
+http://127.0.0.1:5000/api/v1/docs
+~~~
 
+
+>>
