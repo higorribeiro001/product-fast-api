@@ -25,6 +25,6 @@ def find_or_add(redis_client, cache_key, list):
         data = json.loads(cached) 
     else:
         data = list
-        add(data)
+        add(redis_client, cache_key, data)
 
     return data

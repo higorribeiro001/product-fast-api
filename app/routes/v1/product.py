@@ -1,7 +1,8 @@
 from flask import json
 from flask_restx import Resource, reqparse
 from flask_restx import Namespace
-from ...utils.redis_client import add, find_or_add, get_redis
+from app.utils.updating_products import updating_list_products
+from ...utils.redis_client import find_or_add, get_redis
 from ...models.product import ProductModel
 from flask_jwt_extended import jwt_required
 from ...utils.paginate import paginate_query
@@ -33,9 +34,7 @@ class Products(Resource):
         except Exception as e:
             return { 'message': str(e) }, 500
 
-        redis_client = get_redis()
-        cache_key = "products:list"
-        add(redis_client, cache_key, [product.json() for product in ProductModel.query.all()])
+        updating_list_products()
 
         return product.json(), 201
 
@@ -66,9 +65,8 @@ class Product(Resource):
             except:
                 return { 'message': 'An interval error ocurred trying to save product.' }, 500
             
-            redis_client = get_redis()
-            cache_key = "products:list"
-            add(redis_client, cache_key, [product.json() for product in ProductModel.query.all()])
+            updating_list_products()
+
             return product_found.json(), 200
         
     @jwt_required()
@@ -77,7 +75,14 @@ class Product(Resource):
         if product:
             try:
                 product.delete_product()
-            except:
-                return { 'message': 'An interval error ocurred trying to delete product.' }, 500
-            return { 'message': 'Product deleted.' }
-        return { 'message': 'Product deleted.' }
+                updating_list_products()
+                return { 'message': 'Product deleted successfully.' }, 200
+            except Exception as e:
+                print(f"Error deleting product: {str(e)}")
+                print(f"Error type: {type(e)}")
+                import traceback
+                traceback.print_exc()
+                
+                return { 'message': f'An internal error occurred: {str(e)}' }, 500
+        else:
+            return { 'message': 'Product not found.' }, 404

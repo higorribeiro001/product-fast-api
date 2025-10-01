@@ -38,7 +38,7 @@ class UserRegister(Resource):
         data = attr.parse_args()
 
         if UserModel.find_by_login(data['email']):
-            return { "message": "The email '{}' already exists.".format(data['email']) }
+            return { "message": "The email '{}' already exists.".format(data['email']) }, 400
         
         data['password'] = generate_password_hash(data['password'], method='pbkdf2:sha256', salt_length=16)
 

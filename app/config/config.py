@@ -31,6 +31,14 @@ class Config:
     migrate.init_app(app, db)
     jwt = JWTManager(app)
 
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": ["http://localhost:4200", "http://127.0.0.1:4200"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "supports_credentials": True
+        }
+    })
+    
     blueprint = Blueprint("api_v1", __name__, url_prefix="/api/v1")
     
     api = Api(
@@ -53,5 +61,3 @@ class Config:
     api.add_namespace(user_ns)
 
     app.register_blueprint(blueprint)
-
-    CORS(app)
