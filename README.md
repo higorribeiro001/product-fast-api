@@ -4,6 +4,17 @@
 ### Restful API desenvolvida para o teste da Tech Solutio. Realiza autenticação, registro de usuário, logout e crud de produtos. O SGBD é Postgresql e há também a utilização de Redis (NoSql) para salvar a lista de produtos em cache.
 
 > Execução:
+### Crie um arquivo .env na raiz do projeto e cole o seguinte conteúdo:
+~~~
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=123456
+POSTGRES_DB=teste_tech_solution
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+
+JWT_SECRET_KEY=DontTellAnyone
+REDIS_URL=redis://redis:6379/0
+~~~
 ### Instale o docker no seu desktop e rode o seguinte comando:
 ~~~
 docker compose up
@@ -50,4 +61,5 @@ http://127.0.0.1:5000/api/v1/docs
 
 
 >>
+
 
