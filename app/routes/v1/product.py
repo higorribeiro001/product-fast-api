@@ -78,11 +78,6 @@ class Product(Resource):
                 updating_list_products()
                 return { 'message': 'Product deleted successfully.' }, 200
             except Exception as e:
-                print(f"Error deleting product: {str(e)}")
-                print(f"Error type: {type(e)}")
-                import traceback
-                traceback.print_exc()
-                
                 return { 'message': f'An internal error occurred: {str(e)}' }, 500
         else:
             return { 'message': 'Product not found.' }, 404
